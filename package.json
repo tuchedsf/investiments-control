@@ -1,0 +1,22 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "API controle carteira investimentos",
+  "main": "server.js",
+  "author": "Diego Ferreira",
+  "license": "MIT",
+  "repository": {
+    "url": "https://example.com/your-username/my-new-project",
+    "type": "git"
+  },
+  "dependencies": {
+    "hapi": "^16.4.3",
+    "hapi-router": "^3.5.0",
+    "joi": "^10.6.0",
+    "moment": "^2.18.1",
+    "mongoose": "^4.11.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
