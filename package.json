@@ -9,6 +9,9 @@
     "url": "https://example.com/your-username/my-new-project",
     "type": "git"
   },
+  "scripts": {
+    "test": "lab --verbose --colors --assert code --coverage" 
+  },
   "dependencies": {
     "hapi": "^16.4.3",
     "hapi-router": "^3.5.0",
@@ -17,6 +20,8 @@
     "mongoose": "^4.11.2"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "lab": "^14.1.1",
+    "code": "^4.1.0"
   }
 }
