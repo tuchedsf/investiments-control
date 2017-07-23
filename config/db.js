@@ -1,4 +1,5 @@
 //importar o mongoose
+/* $lab:coverage:off$ */
 const mongoose = require('mongoose');
 
 const uriDB = 'mongodb://localhost/investiments';
@@ -30,3 +31,4 @@ process.on('SIGINT',function(){
         process.exit(0);
     });
 });
+/* $lab:coverage:on$ */

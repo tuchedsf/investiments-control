@@ -7,7 +7,8 @@ const OrderModel = require('./model/Order')
 const Moment = require('moment')
 const Joi = require('joi')
 
-const handleFind = require('./actions/action-find')
+const actionFind = require('./actions/action-find')
+const actionSave = require('./actions/action-create')
 
 const getCurrentDateWithoutTimezone =  Moment().format('YYYY-MM-DDTHH:mm:ss')
 
@@ -16,7 +17,7 @@ const routes = [
   {
 		method: 'GET',
 		path: URI,
-		handler: handleFind
+		handler: actionFind
 	},
   //GET ONE Order
   {
@@ -51,48 +52,10 @@ const routes = [
   },
   // POST OBJECT
   {
-	method: 'POST',
-	path: URI,
-	handler: (request, reply) => {
-		const order = new OrderModel({
-      dataOperacao : request.payload.dataOperacao, 
-      papel: request.payload.papel,
-      operacao: request.payload.operacao,
-      quantidade: request.payload.quantidade,
-      preco: request.payload.preco,
-      custoTotal: request.payload.custoTotal,
-		  created_at: getCurrentDateWithoutTimezone
-		})
-
-		order.save((error, data) => {
-			if (error) {
-				if (error.index == 0) {
-					reply({
-						error: true,
-						data: 'Já existe uma ordem registrada!',
-						statusCode: 403,
-						statusText: 'NOK',
-					}).code(403)
-				} else {
-					reply({
-						error: true,
-						data: error,
-						statusCode: 401,
-						statusText: 'NOK',
-					})
-				}
-			} else {
-				reply({
-					error: false,
-					data: data,
-					message: 'Nova ordem cadastrado com sucesso!',
-					statusCode: 201,
-					statusText: 'OK'
-				}).code(201)
-			}
-		})
-	}
-},
+  	method: 'POST',
+  	path: URI,
+  	handler: actionSave 
+  },
 // PUT OBJECT
 {
 method: 'PUT',
