@@ -4,7 +4,8 @@
   se for venda ( V ) = valorLiquido – quantidade * precoMedio
  */
 const ganhoPerda = (operacao, quantidade, preco, valorLiquido, precoMedio) => {
-  return operacao === 'D' ? preco : (operacao === 'V' ? valorLiquido - quantidade * precoMedio : 0 );
+  //return operacao === 'D' ? preco : (operacao === 'V' ? valorLiquido - quantidade * precoMedio : 0 );
+  return operacao === 'D' ? preco : (operacao === 'V' ? (valorLiquido - quantidade * precoMedio).toFixed(2) : 0 );
 }
 
 module.exports = ganhoPerda

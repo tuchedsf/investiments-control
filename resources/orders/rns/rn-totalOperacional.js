@@ -11,7 +11,7 @@ const totalOperacional = (operacao, quantidade, preco) => {
   } else {
     totalOperacional = quantidade * preco
   }
-  return totalOperacional;
+  return parseFloat(totalOperacional.toFixed(2));
   //return operacao === 'D' ? preco : quantidade * preco
 }
 
