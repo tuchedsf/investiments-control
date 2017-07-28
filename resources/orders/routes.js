@@ -8,7 +8,10 @@ const Moment = require('moment')
 const Joi = require('joi')
 
 const actionFind = require('./actions/action-find')
-const actionSave = require('./actions/action-create')
+const actionFindById = require('./actions/action-findById')
+const actionUpdate = require('./actions/action-update')
+const actionDelete = require('./actions/action-delete')
+const actionCreate = require('./actions/action-create')(OrderModel)
 
 const getCurrentDateWithoutTimezone =  Moment().format('YYYY-MM-DDTHH:mm:ss')
 
@@ -23,25 +26,7 @@ const routes = [
   {
     method: 'GET',
       path: URI + `/{id}`,
-      handler: (req, reply) => {
-        OrderModel.findById(req.params.id, (error, data) => {
-        if (error) {
-          reply({
-            error: true,
-            data: error,
-            statusCode: 401,
-            statusText: 'NOK'
-          }).code(401)
-        } else {
-          reply({
-            error: false,
-            data: data,
-            statusCode: 200,
-            statusText: 'OK'
-          }).code(200)
-        }
-      })
-    },
+      handler: actionFindById,
     config: {
       validate: {
         params: {
@@ -54,73 +39,33 @@ const routes = [
   {
   	method: 'POST',
   	path: URI,
-  	handler: actionSave 
+  	handler: actionCreate 
   },
 // PUT OBJECT
 {
-method: 'PUT',
-path: URI + `/{id}`,
-handler: (req, reply) => {
-  const _id = { _id: req.params.id }
-
-  console.log(req.payload);
-  const order = new OrderModel({
-      dataOperacao : request.payload.dataOperacao, 
-      papel: request.payload.papel,
-      operacao: request.payload.operacao,
-      quantidade: request.payload.quantidade,
-      preco: request.payload.preco,
-      custoTotal: request.payload.custoTotal,
-      created_at: getCurrentDateWithoutTimezone
-    })
-
-  OrderModel.update(_id, system, { multi: false }, (error, data) => {
-  			if (error) {
-  				reply({
-  					error: true,
-  					data: error,
-  					statusCode: 401,
-  					statusText: 'NOK'
-  				}).code(401)
-  			} else {
-          console.log(data)
-  				reply({
-  					error: false,
-  					data: data,
-  					message: 'Ordem editada com sucesso!',
-  					statusCode: 204,
-  					statusText: 'OK'
-  				}).code(200)
-  			}
-    })
-  }
+  method: 'PUT',
+  path: URI + `/{id}`,
+  handler: actionUpdate,
+  config: {
+      validate: {
+        params: {
+          id: Joi.string().required()
+        }
+      }
+    }
 },
 // Delete a categorie by id
 {
 	method: 'DELETE',
 	path: URI + `/{id}`,
-	handler: (request, reply) => {
-		const _id = { _id: request.params.id }
-
-		OrderModel.remove(_id, (error, data) => {
-			if (error) {
-				reply({
-					error: true,
-					data: error,
-					statusCode: 401,
-					statusText: 'NOK',
-				}).code(401)
-			} else {
-				reply({
-					error: false,
-					data: data,
-					message: 'Ordem deletada com sucesso!',
-					statusCode: 200,
-					statusText: 'OK'
-				}).code(200)
-			}
-		})
-	}
+	handler: actionDelete,
+  config: {
+      validate: {
+        params: {
+          id: Joi.string().required()
+        }
+      }
+    }
 }
 ]
 

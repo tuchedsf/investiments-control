@@ -15,8 +15,7 @@ const _schema = {
   estoque:{ type: Number },
   precoMedio: { type: Number },
   ganhoPerda: { type: Number },
-  IrMes: { type: Number },
-  mesRef: Date, 
+  irMes: { type: Number },
   vendasMes: { type: Number },
 	created_at: Date,
 	updated_at: Date
