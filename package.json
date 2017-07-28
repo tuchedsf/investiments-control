@@ -10,7 +10,8 @@
     "type": "git"
   },
   "scripts": {
-    "test": "lab --verbose --colors --assert code --coverage" 
+    "test": "lab --verbose --colors --assert code --coverage",
+    "dev": "nodemon app.js"
   },
   "dependencies": {
     "hapi": "^16.4.3",

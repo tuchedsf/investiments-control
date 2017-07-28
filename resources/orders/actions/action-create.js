@@ -1,37 +1,11 @@
-const OrderModel = require('../model/Order')
+//const OrderModel = require('../model/Order')
 
 const Moment = require('moment')
 const Joi = require('joi')
 const getCurrentDateWithoutTimezone =  Moment().format('YYYY-MM-DDTHH:mm:ss')
 
-//Calculo Mes ano Referencia -> avaliar a necessidade pode-se olhar pela data
-const mesAnoRef = (data) => {
-  let mesAnoRef = Moment(data).format('YYYY-MM')
-  return mesAnoRef
-}
-const totalOperacional = require('../rns/rn-totalOperacional')
-const ganhoPerda = require('../rns/rn-ganhoPerda')
-
-
-const calculaCampos = (order) => {
-  
-  order.totalOperacional = totalOperacional(order.operacao, order.quantidade, order.preco)
-  order.rateio = 0;
-  // order.rateio: { type: Number },
-  // order.valorLiquido: { type: Number },
-  // order.estoque:{ type: Number },
-  // order.precoMedio: { type: Number },
-  // order.ganhoPerda: { type: Number },
-  // order.IrMes: { type: Number },
-  //order.mesRef = mesAnoRef(order.dataOperacao); 
-  //order.vendasMes: { type: Number },
-
-
-  return order;
-}
-
-
-const save = (request, reply) => {
+const save = (OrderModel) => {
+  return (request, reply) => {
   let order = new OrderModel({
     dataOperacao : request.payload.dataOperacao, 
     papel: request.payload.papel,
@@ -39,9 +13,17 @@ const save = (request, reply) => {
     quantidade: request.payload.quantidade,
     preco: request.payload.preco,
     custoTotal: request.payload.custoTotal,
-    created_at: getCurrentDateWithoutTimezone
+    created_at: getCurrentDateWithoutTimezone,
+    //campos a serem calculados
+    totalOperacional: 100,
+    rateio: 100,
+    valorLiquido: 100,
+    estoque: 100,
+    precoMedio: 100,
+    ganhoPerda: 100, 
+    irMes: 100,
+    vendasMes: 100
   })
-  calculaCampos(order);
   
   order.save((error, data) => {
     if (error) {
@@ -70,6 +52,8 @@ const save = (request, reply) => {
       }).code(201)
     }
   })
+  }
+  
 }
 
 module.exports = save
