@@ -20,7 +20,10 @@ const routes = [
   {
 		method: 'GET',
 		path: URI,
-		handler: actionFind
+    handler: actionFind
+    // config: {
+    //   auth: false
+    // }
 	},
   //GET ONE Order
   {

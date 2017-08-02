@@ -3,6 +3,10 @@ const Hapi = require('hapi')
 const server = new Hapi.Server()
 
 require('./config/db');
+const secretKey = require('./config/secret')
+//const validate = require('./resources/auth/validateAuth')
+const validate = require ('./resources/auth/actions/action-validate-auth')
+
 
 /**
  * Para desabilitar o teste em algum lugar do codigo utiliza: 
@@ -14,9 +18,10 @@ require('./config/db');
 server.connection({
   host: process.env.HOST || '0.0.0.0',
   port: process.env.PORT || 3000,
-  routes: { cors: true }
+  routes: {
+      cors: true
+  }
 })
-
 
 /**
  * Registra um plugin no hapi no caso o hapi-router que ira tratar todas as
@@ -24,21 +29,36 @@ server.connection({
  * necessário importar cada arquivo de rota separadamente.
  * @type {[type]}
  */
-server.register({
-  register: require('hapi-router'),
-  options: {
-    routes: 'resources/**/routes.js'
-  }
-} , function (err) {
-    if (err) {
-        console.error(err);
-        throw err;
+const plugins = [
+  {
+    register: require('hapi-auth-jwt'),
+  },
+  {
+    register: require('hapi-router'),
+    options: {
+      routes: 'resources/**/routes.js',
     }
-  })
+  }
+]
 
-server.start((err) => {
-  if (err) throw err
-  console.log("Servidor startado com sucesso")
+server.register(plugins, (err) => {
+  if (err) {
+    throw err;
+  }
+  server.auth.strategy('token', 'jwt', {
+    key: secretKey,
+    validateFunc: validate,
+    verifyOptions: { algorithms: ['HS256'] }
+  }) 
+
+  server.auth.default('token')
+  
+  server.start((err) => {
+    if (err) throw err
+    console.log("Servidor startado com sucesso")
+  })
 })
+
+
 /* $lab:coverage:on$ */
 module.exports = server
