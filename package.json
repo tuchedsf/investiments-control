@@ -14,7 +14,7 @@
     "dev": "nodemon app.js"
   },
   "dependencies": {
-    "bcrypt": "^1.0.2",
+    "bcrypt": "^5.0.0",
     "bcrypt-nodejs": "^0.0.3",
     "hapi": "^16.4.3",
     "hapi-auth-jwt": "^4.0.0",
